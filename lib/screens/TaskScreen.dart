@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import '../widgets/TaskList.dart';
 import './AddTaskScreen.dart';
+import '../models/task.dart';
 
-class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key});
+class TasksScreen extends StatefulWidget {
+  TasksScreen({super.key});
+
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [Task(name: 'Nawf'), Task(name: 'Rifa')];
+
+  void buildingCallback(bool newValue, int index) {
+    if (newValue != null) {
+      setState(() {
+        tasks[index].toggleDone();
+      });
+    }
+  }
+
+  void textFieldSubmit(String task) {
+    setState(() {
+      tasks.add(Task(name: task));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +39,9 @@ class TasksScreen extends StatelessWidget {
               builder: (context) => Container(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddTaskScreen()));
+                  child: AddTaskScreen(
+                    textFieldSubmit: textFieldSubmit,
+                  )));
         },
         backgroundColor: Colors.lightBlueAccent,
         child: const Icon(Icons.add),
@@ -51,7 +75,7 @@ class TasksScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '12 Tasks',
+                  '${tasks.length} Tasks',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 )
               ],
@@ -61,7 +85,7 @@ class TasksScreen extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: 300,
-              child: TaskList(),
+              child: TaskList(tasks: tasks, buildingCallback: buildingCallback),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(

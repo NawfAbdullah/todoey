@@ -4,8 +4,9 @@ import 'package:flutter/services.dart';
 Widget buildBottomSheet(BuildContext context) => Container();
 
 class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
-
+  AddTaskScreen({super.key, required this.textFieldSubmit});
+  Function textFieldSubmit;
+  String task = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,9 +27,15 @@ class AddTaskScreen extends StatelessWidget {
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
+              onChanged: (value) {
+                task = value;
+              },
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  textFieldSubmit(task);
+                  Navigator.pop(context);
+                },
                 child: Text('Add Task'),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
