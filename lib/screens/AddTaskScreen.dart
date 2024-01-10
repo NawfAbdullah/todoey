@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../models/task_data.dart';
 
 Widget buildBottomSheet(BuildContext context) => Container();
 
 class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({super.key, required this.textFieldSubmit});
-  Function textFieldSubmit;
+  AddTaskScreen({super.key});
+
   String task = '';
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,8 @@ class AddTaskScreen extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {
-                  textFieldSubmit(task);
+                  print('a');
+                  Provider.of<TaskData>(context, listen: false).addTask(task);
                   Navigator.pop(context);
                 },
                 child: Text('Add Task'),

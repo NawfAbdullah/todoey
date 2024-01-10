@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/task_data.dart';
 import '../widgets/TaskList.dart';
 import './AddTaskScreen.dart';
 import '../models/task.dart';
 
-class TasksScreen extends StatefulWidget {
+class TasksScreen extends StatelessWidget {
   TasksScreen({super.key});
 
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [Task(name: 'Nawf'), Task(name: 'Rifa')];
-
-  void buildingCallback(bool newValue, int index) {
-    if (newValue != null) {
-      setState(() {
-        tasks[index].toggleDone();
-      });
-    }
-  }
-
-  void textFieldSubmit(String task) {
-    setState(() {
-      tasks.add(Task(name: task));
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
@@ -39,9 +19,7 @@ class _TasksScreenState extends State<TasksScreen> {
               builder: (context) => Container(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddTaskScreen(
-                    textFieldSubmit: textFieldSubmit,
-                  )));
+                  child: AddTaskScreen()));
         },
         backgroundColor: Colors.lightBlueAccent,
         child: const Icon(Icons.add),
@@ -75,7 +53,7 @@ class _TasksScreenState extends State<TasksScreen> {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${Provider.of<TaskData>(context).tasks.length} Tasks',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 )
               ],
@@ -85,12 +63,12 @@ class _TasksScreenState extends State<TasksScreen> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: 300,
-              child: TaskList(tasks: tasks, buildingCallback: buildingCallback),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
+              child: TaskList(),
             ),
           )
         ],
